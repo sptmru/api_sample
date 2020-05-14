@@ -1,0 +1,30 @@
+version: "3"
+services:
+    mongo:
+        image: mongo
+        container_name: "mongodb"
+        volumes:
+            - ./data/db:/data/db
+        ports:
+            - "27017:27017"
+
+    backend-app:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        depends_on:
+            - mongo
+    swagger_ui:
+        environment:
+            - API_URL=http://localhost/api-docs.json/api/v1
+        image: "swaggerapi/swagger-ui"
+        restart: always
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+        volumes:
+            - ./configurations/nginx.conf:/etc/nginx/conf.d/default.conf
+        links:
+            - "backend-app"
+            - "swagger_ui"

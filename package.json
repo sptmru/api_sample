@@ -1,0 +1,30 @@
+{
+  "name": "backend_api",
+  "version": "0.0.1",
+  "description": "Backend API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Soslan Aldatov <me@sptm.dev>",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "boom": "^7.3.0",
+    "koa": "^2.11.0",
+    "koa-body": "^4.1.1",
+    "koa-passport": "^4.1.3",
+    "koa-router": "^8.0.8",
+    "koa2-swagger-ui": "^3.0.0",
+    "mongoose": "^5.9.7",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "swagger-koa": "^2.1.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "koa-logger": "^3.2.1",
+    "nodemon": "^2.0.3"
+  }
+}

@@ -1,0 +1,154 @@
+swagger: "2.0"
+resourcePath: /api/v1
+description: Base API
+apis:
+  - path: /
+    operations:
+      - httpMethod: GET
+        summary: Greeting
+        notes: Returns "Welcome"
+
+  - path: /login
+    operations:
+      - httpMethod: POST
+        summary: Login with email and password
+        notes: Returns a user based on email
+        responseClass: User
+        nickname: login
+        consumes:
+          - application/json
+        parameters:
+          - name: email
+            dataType: string
+            paramType: query
+            required: true
+            description: Your email
+          - name: password
+            dataType: string
+            paramType: query
+            required: true
+            description: Your password
+
+  - path: /users
+    get:
+      summary: Returns all users
+
+models:
+  User:
+    id: User
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  Asset:
+    id: Asset
+    properties:
+      name:
+        type: string
+
+  TeacherSuggestionRequest:
+    id: TeacherSuggestionRequest
+    properties:
+      forename:
+        type: string
+      lastname:
+        type: string
+      prefix:
+        type: string
+      suffix:
+        type: string
+      schoolUid:
+        type: string
+
+  TeacherRatingCategory:
+    id: TeacherRatingCategory
+    properties:
+      categoryType:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      order:
+        type: integer
+      rating:
+        type: integer
+
+  Teacher:
+    id: Teacher
+    properties:
+      forename:
+        type: string
+      lastname:
+        type: string
+      prefix:
+        type: string
+      suffix:
+        type: string
+      rating:
+        type: integer
+      ratingCount:
+        type: integer
+      ownRating:
+        type: integer
+      ratingCategories:
+        type: TeacherRatingCategory
+
+  SchoolSuggestionRequest:
+    id: SchoolSuggestionRequest
+    properties:
+      name:
+        type: string
+      street:
+        type: string
+      postcode:
+        type: string
+      place:
+        type: string
+      countryCode:
+        type: string
+      website:
+        type: string
+      phone:
+        type: string
+      teachers: TeachersSuggestionRequest
+
+  SchoolRatingCategory:
+    id: SchoolRatingCategory
+    properties:
+      categoryType:
+        type: string
+      title:
+        type: string
+      order:
+        type: integer
+      rating:
+        type: integer
+  School:
+    id: School
+    properties:
+      name:
+        type: string
+      street:
+        type: string
+      address:
+        type: string
+      countryCode:
+        type: string
+      rating:
+        type: integer
+      ratingCount:
+        type: integer
+      ownRating:
+        type: integer
+      isSelectedSchool:
+        type: integer
+      ratingCategories:
+        type: SchoolRatingCategory
+      categoryType:
+        type: string,
+      title:
+        type: string,
+      order:
+        type: integer,
