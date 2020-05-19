@@ -37,7 +37,7 @@ function UserController() {
             await user.save();
             passport.authenticate('signup', {
                 session: false
-            }), async (req, res, next) => {
+            }), async (req, res) => {
                 res.json({
                     message: 'Signup successful',
                     user: user

@@ -1,54 +1,191 @@
 swagger: "2.0"
-resourcePath: /api/v1
-description: Base API
-apis:
-  - path: /
-    operations:
-      - httpMethod: GET
-        summary: Greeting
-        notes: Returns "Welcome"
-
-  - path: /login
-    operations:
-      - httpMethod: POST
-        summary: Login with email and password
-        notes: Returns a user based on email
-        responseClass: User
-        nickname: login
-        consumes:
-          - application/json
-        parameters:
-          - name: email
-            dataType: string
-            paramType: query
-            required: true
-            description: Your email
-          - name: password
-            dataType: string
-            paramType: query
-            required: true
-            description: Your password
-
-  - path: /users
+info:
+  description: "This is a Swagger YAML description of the backend API"
+  version: 0.1.1
+  title: Swagger Backend API
+host: localhost
+basePath: /api/v1
+tags:
+  - name: login
+    description: Login operation
+  - name: users
+    description: Operations about isers
+  - name: assets
+    description: Operations about assets
+  - name: schools
+    description: Operations about schools
+  - name: teachers
+    description: Operations about teachers
+schemes:
+  - http
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: Login to the API
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Login JSON with "email" and "password" fields
+          required: true
+          schema: 
+            $ref: "#/definitions/Login"
+      responses:
+        "401":
+          description: Unauthorized
+  /users:
     get:
-      summary: Returns all users
-
-models:
+      tags:
+        - users
+      summary: Get all users
+      x-swagger-router-controller: controllers/userController
+      operationId: getUsers
+      produces:
+        - application/json
+      responses: 
+        "200":
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/User"
+      security:
+        - backend_auth:
+          - "read"
+    post:
+      tags:
+        - users
+      summary: Create a new user
+      operationId: addUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: User object to add
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: Invalid input
+      security:
+        - backend_auth:
+          - "write"
+  "/users/{userUID}":
+    get:
+      tags:
+        - users
+      summary: Find user by UID
+      description: Returns a single user
+      operationId: getSingleUser
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userUID
+          description: UID of user to return
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: User not found
+      security:
+        - backend_auth:
+          - "read"
+    put:
+      tags:
+        - users
+      summary: Update user
+      operationId: updateUser
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user to update
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: User object to add
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: Invalid input
+        "404":
+          description: User not found
+      security:
+        - backend_auth:
+          - "write"
+    delete:
+      tags:
+        - users
+      summary: Delete an user
+      operationId: deleteUser
+      produces:
+        - application/json
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user to update
+          required: true
+          type: string
+      responses:
+        "204":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: User not found
+      security:
+        - backend_auth:
+          - "write"
+securityDefinitions:
+  backend_auth:
+    type: oauth2
+    authorizationUrl: "http://localhost/login"
+    flow: implicit
+    scopes: 
+      "read": read anything
+      "write": write anything
+definitions:
+  Login:
+    properties:
+      email:
+        type: string
+      password:
+        type: string 
   User:
-    id: User
     properties:
       email:
         type: string
       password:
         type: string
   Asset:
-    id: Asset
     properties:
       name:
         type: string
-
   TeacherSuggestionRequest:
-    id: TeacherSuggestionRequest
     properties:
       forename:
         type: string
@@ -60,9 +197,7 @@ models:
         type: string
       schoolUid:
         type: string
-
   TeacherRatingCategory:
-    id: TeacherRatingCategory
     properties:
       categoryType:
         type: string
@@ -74,9 +209,7 @@ models:
         type: integer
       rating:
         type: integer
-
   Teacher:
-    id: Teacher
     properties:
       forename:
         type: string
@@ -93,10 +226,9 @@ models:
       ownRating:
         type: integer
       ratingCategories:
-        type: TeacherRatingCategory
-
+        type: array
+        $ref: "#/definitions/TeacherRatingCategory"
   SchoolSuggestionRequest:
-    id: SchoolSuggestionRequest
     properties:
       name:
         type: string
@@ -112,10 +244,10 @@ models:
         type: string
       phone:
         type: string
-      teachers: TeachersSuggestionRequest
-
+      teachers: 
+        type: array
+        $ref: "#/definitions/TeacherSuggestionRequest"
   SchoolRatingCategory:
-    id: SchoolRatingCategory
     properties:
       categoryType:
         type: string
@@ -126,7 +258,6 @@ models:
       rating:
         type: integer
   School:
-    id: School
     properties:
       name:
         type: string
@@ -145,10 +276,11 @@ models:
       isSelectedSchool:
         type: integer
       ratingCategories:
-        type: SchoolRatingCategory
+        type: array
+        $ref: "#/definitions/SchoolRatingCategory"
       categoryType:
-        type: string,
+        type: string
       title:
-        type: string,
+        type: string
       order:
-        type: integer,
+        type: integer
