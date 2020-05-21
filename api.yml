@@ -79,7 +79,7 @@ paths:
       security:
         - backend_auth:
           - "write"
-  "/users/{userUID}":
+  "/users/{UID}":
     get:
       tags:
         - users
@@ -90,7 +90,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: userUID
+          name: UID
           description: UID of user to return
           required: true
           type: string
@@ -114,7 +114,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: userUID
+        - name: UID
           in: path
           description: UID of user to update
           required: true
@@ -145,7 +145,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: userUID
+        - name: UID
           in: path
           description: UID of user to update
           required: true
@@ -157,6 +157,372 @@ paths:
             $ref: "#/definitions/User"
         "404":
           description: User not found
+      security:
+        - backend_auth:
+          - "write"
+  /assets:
+    get:
+      tags:
+        - assets
+      summary: Get all assets
+      x-swagger-router-controller: controllers/assetsController
+      operationId: getAssets
+      produces:
+        - application/json
+      responses: 
+        "200":
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/Asset"
+      security:
+        - backend_auth:
+          - "read"
+    post:
+      tags:
+        - assets
+      summary: Create a new asset
+      operationId: addAsset
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: Asset object to add
+          required: true
+          schema:
+            $ref: "#/definitions/Asset"
+      responses:
+        "400":
+          description: Invalid input
+      security:
+        - backend_auth:
+          - "write"
+  "/assets/{UID}":
+    get:
+      tags:
+        - assets
+      summary: Find asset by UID
+      description: Returns a single asset
+      operationId: getSingleAsset
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: UID
+          description: UID of asset to return
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Asset"
+        "404":
+          description: Asset not found
+      security:
+        - backend_auth:
+          - "read"
+    put:
+      tags:
+        - assets
+      summary: Update asset
+      operationId: updateAsset
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of asset to update
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Asset object to add
+          required: true
+          schema:
+            $ref: "#/definitions/Asset"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Asset"
+        "400":
+          description: Invalid input
+        "404":
+          description: Asset not found
+      security:
+        - backend_auth:
+          - "write"
+    delete:
+      tags:
+        - assets
+      summary: Delete an asset
+      operationId: deleteAsset
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of asset to update
+          required: true
+          type: string
+      responses:
+        "204":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Asset"
+        "404":
+          description: Asset not found
+      security:
+        - backend_auth:
+          - "write"
+  /schools:
+    get:
+      tags:
+        - schools
+      summary: Get all schools
+      x-swagger-router-controller: controllers/schoolController
+      operationId: getSchools
+      produces:
+        - application/json
+      responses: 
+        "200":
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/School"
+      security:
+        - backend_auth:
+          - "read"
+    post:
+      tags:
+        - schools
+      summary: Create a new school
+      operationId: addSchool
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: School object to add
+          required: true
+          schema:
+            $ref: "#/definitions/School"
+      responses:
+        "400":
+          description: Invalid input
+      security:
+        - backend_auth:
+          - "write"
+  "/schools/{UID}":
+    get:
+      tags:
+        - schools
+      summary: Find school by UID
+      description: Returns a single school
+      operationId: getSingleSchool
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: UID
+          description: UID of school to return
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/School"
+        "404":
+          description: School not found
+      security:
+        - backend_auth:
+          - "read"
+    put:
+      tags:
+        - schools
+      summary: Update school
+      operationId: updateSchool
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of school to update
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: School object to add
+          required: true
+          schema:
+            $ref: "#/definitions/School"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/School"
+        "400":
+          description: Invalid input
+        "404":
+          description: School not found
+      security:
+        - backend_auth:
+          - "write"
+    delete:
+      tags:
+        - schools
+      summary: Delete a school
+      operationId: deleteSchool
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of school to update
+          required: true
+          type: string
+      responses:
+        "204":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/School"
+        "404":
+          description: School not found
+      security:
+        - backend_auth:
+          - "write"
+  /teachers:
+    get:
+      tags:
+        - teachers
+      summary: Get all teachers
+      x-swagger-router-controller: controllers/teacherController
+      operationId: getTeachers
+      produces:
+        - application/json
+      responses: 
+        "200":
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/Teacher"
+      security:
+        - backend_auth:
+          - "read"
+    post:
+      tags:
+        - teachers
+      summary: Create a new teacher
+      operationId: addTeacher
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: Teacher object to add
+          required: true
+          schema:
+            $ref: "#/definitions/Teacher"
+      responses:
+        "400":
+          description: Invalid input
+      security:
+        - backend_auth:
+          - "write"
+  "/teachers/{UID}":
+    get:
+      tags:
+        - teachers
+      summary: Find teacher by UID
+      description: Returns a single teacher
+      operationId: getSingleTeacher
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: UID
+          description: UID of teacher to return
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Teacher"
+        "404":
+          description: Teacher not found
+      security:
+        - backend_auth:
+          - "read"
+    put:
+      tags:
+        - teachers
+      summary: Update teacher
+      operationId: updateTeacher
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of teacher to update
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Teacher object to add
+          required: true
+          schema:
+            $ref: "#/definitions/Teacher"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Teacher"
+        "400":
+          description: Invalid input
+        "404":
+          description: Teacher not found
+      security:
+        - backend_auth:
+          - "write"
+    delete:
+      tags:
+        - teachers
+      summary: Delete a teacher
+      operationId: deleteTeacher
+      produces:
+        - application/json
+      parameters:
+        - name: UID
+          in: path
+          description: UID of teacher to update
+          required: true
+          type: string
+      responses:
+        "204":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Teacher"
+        "404":
+          description: Teacher not found
       security:
         - backend_auth:
           - "write"
