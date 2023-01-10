@@ -18,7 +18,7 @@
     "koa2-swagger-ui": "^3.0.0",
     "mongoose": "^5.9.7",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "swagger-koa": "^2.1.0",
     "yamljs": "^0.3.0"
